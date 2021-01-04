@@ -108,7 +108,7 @@ func Optimize(s *discordgo.Session, m *discordgo.MessageCreate) {
 	for i, cmd := range cmds[:] {
 		err = cmd.Run()
 		if err != nil && contentType != "text/html" {
-			log.Println("External command:", err)
+			log.Printf("%s: %+v", "External command", err)
 			s.ChannelMessageSend(m.ChannelID, "Лень")
 			continue
 		}
