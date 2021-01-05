@@ -8,12 +8,13 @@ import (
 	"syscall"
 
 	"github.com/Nonne46/CuteBot/command"
-	"github.com/joho/godotenv"
-
 	"github.com/bwmarrin/discordgo"
+	"github.com/joho/godotenv"
 )
 
-const commandPrefix string = "~"
+var (
+	commandPrefix string
+)
 
 func main() {
 	err := godotenv.Load()
@@ -29,6 +30,8 @@ func main() {
 	// Open a websocket connection to Discord and begin listening.
 	err = dg.Open()
 	e("error opening connection,", err)
+
+	commandPrefix = os.Getenv("COMMAND_PREFIX")
 
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
@@ -49,9 +52,9 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 
 	switch {
 	case strings.HasPrefix(message.Content, commandPrefix+"xz"):
-		command.Xz(session, message)
+		command.XzCommand(session, message)
 	case strings.HasPrefix(message.Content, commandPrefix+"o"):
-		command.Optimize(session, message)
+		command.OptimizeCommand(session, message)
 	}
 }
 

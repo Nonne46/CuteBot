@@ -11,8 +11,8 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// Xz ...
-func Xz(s *discordgo.Session, m *discordgo.MessageCreate) {
+// XzCommand ...
+func XzCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Если аутяга ничего не вложил для сжатия
 	if len(m.Attachments) == 0 {
 		s.ChannelMessageSend(m.ChannelID, "Кто прочитал тот здохнет")

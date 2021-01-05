@@ -14,8 +14,8 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// Optimize ...
-func Optimize(s *discordgo.Session, m *discordgo.MessageCreate) {
+// OptimizeCommand ...
+func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Если аутяга ничего не вложил для сжатия
 	if len(m.Attachments) == 0 {
 		s.ChannelMessageSend(m.ChannelID, "Кто прочитал тот здохнет")
