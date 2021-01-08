@@ -105,11 +105,13 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	msg, _ := s.ChannelMessageSend(m.ChannelID, "Понял")
+
 	for i, cmd := range cmds[:] {
 		err = cmd.Run()
 		if err != nil && contentType != "text/html" {
 			log.Printf("%s: %+v", "External command", err)
-			s.ChannelMessageSend(m.ChannelID, "Лень")
+			s.ChannelMessageEdit(m.ChannelID, msg.ID, "Лень")
 			continue
 		}
 
@@ -129,9 +131,13 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 		progressMessage := strings.Builder{}
 		fmt.Fprintf(&progressMessage, "%s (%d/%d) %d/%d | %d(%d%%)", cmd.Args[0], i+1, len(cmds), fileSize, len(string(out)), len(string(out))-fileSize, diffperc)
 
-		s.ChannelMessageSend(m.ChannelID, progressMessage.String())
+		//msg, _ = s.ChannelMessageSend(m.ChannelID, progressMessage.String())
+		s.ChannelMessageEdit(m.ChannelID, msg.ID, progressMessage.String())
+
 		fmt.Println(progressMessage.String())
 	}
+
+	s.ChannelMessageDelete(msg.ChannelID, msg.ID)
 
 	out, err := ioutil.ReadFile(tmpFile.Name())
 
@@ -139,7 +145,8 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 	os.Remove(tmpfileName)
 
 	message := strings.Builder{}
-	fmt.Fprintf(&message, "LOLWAT? %d (%d%%)", len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
+	fmt.Fprintf(&message, "%s %d/%d | %d(%d%%)", "LOLWAT?", fileSize, len(string(out)), len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
+	//fmt.Fprintf(&message, "LOLWAT? %d (%d%%)", len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
 
 	outReader := strings.NewReader(string(out))
 	s.ChannelFileSendWithMessage(m.ChannelID, message.String(), fileName, outReader)
