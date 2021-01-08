@@ -126,12 +126,9 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 			log.Println(err)
 		}
 
-		diffperc := PercentageChange(fileSize, len(string(out)))
-
 		progressMessage := strings.Builder{}
-		fmt.Fprintf(&progressMessage, "%s (%d/%d) %d/%d | %d(%d%%)", cmd.Args[0], i+1, len(cmds), fileSize, len(string(out)), len(string(out))-fileSize, diffperc)
+		fmt.Fprintf(&progressMessage, "%s (%d/%d) %d/%d | %d(%d%%)", cmd.Args[0], i+1, len(cmds), fileSize, len(string(out)), len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
 
-		//msg, _ = s.ChannelMessageSend(m.ChannelID, progressMessage.String())
 		s.ChannelMessageEdit(m.ChannelID, msg.ID, progressMessage.String())
 
 		fmt.Println(progressMessage.String())
@@ -146,7 +143,6 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	message := strings.Builder{}
 	fmt.Fprintf(&message, "%s %d/%d | %d(%d%%)", "LOLWAT?", fileSize, len(string(out)), len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
-	//fmt.Fprintf(&message, "LOLWAT? %d (%d%%)", len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
 
 	outReader := strings.NewReader(string(out))
 	s.ChannelFileSendWithMessage(m.ChannelID, message.String(), fileName, outReader)
