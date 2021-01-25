@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 
@@ -54,7 +55,13 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	case strings.HasPrefix(message.Content, commandPrefix+"xz"):
 		command.XzCommand(session, message)
 	case strings.HasPrefix(message.Content, commandPrefix+"o"):
-		command.OptimizeCommand(session, message)
+		itet := strings.Split(message.Content, commandPrefix+"o")
+		ite := 1
+		if len(itet[1]) != 0 {
+			ite, _ = strconv.Atoi(itet[1])
+		}
+		fmt.Println(ite, itet, "lalala")
+		command.OptimizeCommand(session, message, ite)
 	}
 }
 

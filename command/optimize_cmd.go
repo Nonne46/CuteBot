@@ -15,7 +15,7 @@ import (
 )
 
 // OptimizeCommand ...
-func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
+func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate, iteration int) {
 	// Если аутяга ничего не вложил для сжатия
 	if len(m.Attachments) == 0 {
 		s.ChannelMessageSend(m.ChannelID, "Кто прочитал тот здохнет")
@@ -105,33 +105,37 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	var percent int = 0
 	msg, _ := s.ChannelMessageSend(m.ChannelID, "Понял")
 
-	for i, cmd := range cmds[:] {
-		err = cmd.Run()
-		if err != nil && contentType != "text/html" {
-			log.Printf("%s: %+v", "External command", err)
-			s.ChannelMessageEdit(m.ChannelID, msg.ID, "Лень")
-			continue
+	for j := 0; j < iteration; j++ {
+		for i, cmd := range cmds[:] {
+			err = executeA(*cmd)
+			if err != nil && contentType != "text/html" {
+				log.Printf("%s: %+v", "External command", err)
+				s.ChannelMessageEdit(m.ChannelID, msg.ID, "Лень")
+				continue
+			}
+
+			var _, err = os.Stat(tmpfileName)
+			if !os.IsNotExist(err) {
+				os.Remove(fileName)
+				os.Rename(tmpfileName, fileName)
+			}
+
+			out, err := ioutil.ReadFile(tmpFile.Name())
+			if err != nil {
+				log.Println(err)
+			}
+
+			progressMessage := strings.Builder{}
+			percent = PercentageChange(fileSize, len(string(out)))
+			fmt.Fprintf(&progressMessage, "%s (%d/%d) %d/%d | %d(%d%%)", cmd.Args[0], (i+1)*(j+1), len(cmds), fileSize, len(string(out)), len(string(out))-fileSize, percent)
+
+			s.ChannelMessageEdit(m.ChannelID, msg.ID, progressMessage.String())
+
+			fmt.Println(progressMessage.String())
 		}
-
-		var _, err = os.Stat(tmpfileName)
-		if !os.IsNotExist(err) {
-			os.Remove(fileName)
-			os.Rename(tmpfileName, fileName)
-		}
-
-		out, err := ioutil.ReadFile(tmpFile.Name())
-		if err != nil {
-			log.Println(err)
-		}
-
-		progressMessage := strings.Builder{}
-		fmt.Fprintf(&progressMessage, "%s (%d/%d) %d/%d | %d(%d%%)", cmd.Args[0], i+1, len(cmds), fileSize, len(string(out)), len(string(out))-fileSize, PercentageChange(fileSize, len(string(out))))
-
-		s.ChannelMessageEdit(m.ChannelID, msg.ID, progressMessage.String())
-
-		fmt.Println(progressMessage.String())
 	}
 
 	s.ChannelMessageDelete(msg.ChannelID, msg.ID)
@@ -153,4 +157,12 @@ func PercentageChange(old, new int) (delta int) {
 	diff := float64(new - old)
 	delta = int((diff / float64(old)) * 100)
 	return
+}
+
+func executeA(cmd exec.Cmd) (err error) {
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
 }
