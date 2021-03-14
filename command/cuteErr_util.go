@@ -15,7 +15,7 @@ type CuteErr struct {
 
 // WrongCommand выводит смешное сообщение когда пользователь неправильно воспользовался коммандой
 func (e CuteErr) WrongCommand() {
-	wrongCommandUse := []string{
+	jokes := []string{
 		"Спорим не сможешь корректно написать?",
 		"Внимательней нужно быть",
 		"Херню пишешь",
@@ -23,23 +23,23 @@ func (e CuteErr) WrongCommand() {
 		"https://cdn.discordapp.com/emojis/768954786938486845.png?v=1",
 	}
 
-	indexJoke := rand.Intn(len(wrongCommandUse))
-	randJoke := wrongCommandUse[indexJoke]
+	indexJoke := rand.Intn(len(jokes))
+	randJoke := jokes[indexJoke]
 	e.s.ChannelMessageSend(e.m.ChannelID, randJoke)
 }
 
 // InsideError выводит смешное сообщение в случае внутренней ошибки
 func (e CuteErr) InsideError(err error) {
-	wrongCommandUse := []string{
+	jokes := []string{
 		"Лень",
 		"*Спонсировано ШУЕ*",
 		"Иди нахуй, короче",
 		"Если вкратце, то иди нахуй",
 	}
 
-	fmt.Printf("%s: %+v", "External command", err)
+	fmt.Println(err)
 
-	indexJoke := rand.Intn(len(wrongCommandUse))
-	randJoke := wrongCommandUse[indexJoke]
+	indexJoke := rand.Intn(len(jokes))
+	randJoke := jokes[indexJoke]
 	e.s.ChannelMessageSend(e.m.ChannelID, randJoke)
 }
