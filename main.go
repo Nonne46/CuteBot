@@ -60,7 +60,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		if len(itet[1]) != 0 {
 			ite, _ = strconv.Atoi(itet[1])
 		}
-		fmt.Println(ite, itet, "lalala")
+		//fmt.Println(ite, itet, "lalala")
 		command.OptimizeCommand(session, message, ite)
 	}
 }

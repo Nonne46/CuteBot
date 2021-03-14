@@ -3,7 +3,6 @@ package command
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"net/http"
 	"os/exec"
 	"strings"
@@ -13,9 +12,11 @@ import (
 
 // XzCommand ...
 func XzCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
+	cErr := CuteErr{s, m}
+
 	// Если аутяга ничего не вложил для сжатия
 	if len(m.Attachments) == 0 {
-		s.ChannelMessageSend(m.ChannelID, "Кто прочитал тот здохнет")
+		cErr.WrongCommand()
 		return
 	}
 
@@ -27,8 +28,7 @@ func XzCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Получаем файл
 	response, err := http.Get(fileURL)
 	if err != nil {
-		s.ChannelMessageSend(m.ChannelID, "Иди нахуй, короче")
-		log.Println(err)
+		cErr.InsideError(err)
 		return
 	}
 	defer response.Body.Close()
@@ -39,8 +39,7 @@ func XzCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	out, err := xz(file.Bytes())
 	if err != nil {
-		s.ChannelMessageSend(m.ChannelID, "Если вкратце, то иди нахуй")
-		log.Println(err)
+		cErr.InsideError(err)
 		return
 	}
 
