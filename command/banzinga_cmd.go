@@ -103,18 +103,18 @@ func GetData(s *discordgo.Session, m *discordgo.MessageCreate, ckey string) {
 func onyxParse(p banInfo) Onyxs {
 	var playerOnyx Onyxs
 
-	xz := strings.Replace(p.Onyx, "\\\"", "\"", -1)
-	xz = strings.Replace(xz, "\\\\\"", "\"", -1)
-	xz = strings.Replace(xz, "[[", "", -1)
-	xz = strings.Replace(xz, "]]", "", -1)
-	xz = strings.Replace(xz, "\\n", "\n", -1)
-	xz = strings.Replace(xz, "]", "", -1)
-	xz = strings.Replace(xz, "[", "", -1)
+	xz := strings.ReplaceAll(p.Onyx, "\\\"", "\"")
+	xz = strings.ReplaceAll(xz, "\\\\\"", "\"")
+	xz = strings.ReplaceAll(xz, "[[", "")
+	xz = strings.ReplaceAll(xz, "]]", "")
+	xz = strings.ReplaceAll(xz, "\\n", "\n")
+	xz = strings.ReplaceAll(xz, "]", "")
+	xz = strings.ReplaceAll(xz, "[", "")
 
 	xzz := strings.Split(xz, "\",\"")
 
 	for i := 0; i < len(xzz); i++ {
-		xzz[i] = strings.Replace(xzz[i], "\"", "", -1)
+		xzz[i] = strings.ReplaceAll(xzz[i], "\"", "")
 	}
 	//
 	playerOnyx.Ckey = xzz[0]
