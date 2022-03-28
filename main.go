@@ -63,7 +63,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		//fmt.Println(ite, itet, "lalala")
 		command.OptimizeCommand(session, message, ite)
 	case strings.HasPrefix(message.Content, commandPrefix+"info"):
-		ckey := strings.Replace(message.Content, commandPrefix+"info ", "", -1)
+		ckey := strings.ReplaceAll(message.Content, commandPrefix+"info ", "")
 		command.GetData(session, message, string(ckey))
 	}
 }
