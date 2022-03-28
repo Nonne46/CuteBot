@@ -10,3 +10,11 @@ enabled = true
 
   [analyzers.meta]
   import_root = "github.com/Nonne46/CuteBot"
+
+[[transformers]]
+name = "gofumpt"
+enabled = true
+
+[[transformers]]
+name = "gofmt"
+enabled = true
