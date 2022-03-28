@@ -118,7 +118,7 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate, iteration
 	msg, _ := s.ChannelMessageSend(m.ChannelID, "Понял")
 
 	for j := 0; j < iteration; j++ {
-		for _, cmd := range cmds[:] {
+		for _, cmd := range cmds {
 
 			executeA := func(cmd exec.Cmd) (err error) {
 				err = cmd.Run()
