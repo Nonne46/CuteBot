@@ -70,12 +70,12 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate, iteration
 		cmds = append(cmds, exec.Command("guetzli", "--quality", "90", fileName, tmpfileName),
 			exec.Command("jhead", "-q", "-autorot", "-purejpg", "-di", "-dx", "-dt", "-zt", fileName),
 			exec.Command("leanify", "-i", "30", "-q", fileName),
-			//exec.Command("magick", "convert", fileName, "-quiet", "-interlace", "Plane", "-define", "jpeg:optimize-coding=true", "-strip", tmpfileName),
+			// exec.Command("magick", "convert", fileName, "-quiet", "-interlace", "Plane", "-define", "jpeg:optimize-coding=true", "-strip", tmpfileName),
 			exec.Command("jpegoptim", "-o", "-q", "--all-progressive", "--strip-all", fileName),
 			exec.Command("ECT", "--allfilters", "--mt-deflate", "-strip", "--strict", "-quiet", "-9", fileName),
 		)
 	case "image/gif":
-		//exec.Command("magick", "convert", fileName, "-quiet", "-set", "dispose", "background", "-layers", "optimize", "-compress", "LZW", "-strip", tmpfileName)
+		// exec.Command("magick", "convert", fileName, "-quiet", "-set", "dispose", "background", "-layers", "optimize", "-compress", "LZW", "-strip", tmpfileName)
 		cmds = append(cmds, exec.Command("gifsicle", "-w", "-j", "--no-conserve-memory", "-o", tmpfileName, "--no-comments", "--no-extensions", "--no-names", "--lossy=85", "-O3", fileName))
 	case "text/html":
 		cmds = append(cmds, exec.Command("tidy", "-m", "--wrap", "0", "--bare", "yes", "--clean", "yes", "--indent", "0", "--join-classes", "yes", "--omit-optional-tags", "yes", "--tidy-mark", "no", "--quiet", "yes", fileName),
@@ -91,7 +91,7 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate, iteration
 		)
 	case "application/pdf":
 		cmds = append(cmds, exec.Command("mutool", "clean", "-ggg", "-z", fileName, tmpfileName))
-		//exec.Command("gs", "-dColorImageDownsampleType=/Bicubic", "-dGrayImageDownsampleType=/Bicubic", "-dMonoImageDownsampleType=/Bicubic", "-dOptimize=true", "-dConvertCMYKImagesToRGB=true", "-dColorConversionStrategy=/sRGB", "-dPrinted=false", "-q", "-dBATCH", "-dNOPAUSE", "-dSAFER", "-dDELAYSAFER", "-dNOPROMPT", "-sDEVICE=pdfwrite", "-dDetectDuplicateImages=true", "-dAutoRotatePages=/None", "-dCompatibilityLevel=1.4", "-dPDFSETTINGS=/ebook", "-dDownsampleColorImages=true", "-dColorImageResolution=150", "-dDownsampleGrayImages=true", "-dGrayImageResolution=150", "-dDownsampleMonoImages=true", "-dMonoImageResolution=150", "-sOutputFile=\""+tmpfileName+"\"", fileName)
+		// exec.Command("gs", "-dColorImageDownsampleType=/Bicubic", "-dGrayImageDownsampleType=/Bicubic", "-dMonoImageDownsampleType=/Bicubic", "-dOptimize=true", "-dConvertCMYKImagesToRGB=true", "-dColorConversionStrategy=/sRGB", "-dPrinted=false", "-q", "-dBATCH", "-dNOPAUSE", "-dSAFER", "-dDELAYSAFER", "-dNOPROMPT", "-sDEVICE=pdfwrite", "-dDetectDuplicateImages=true", "-dAutoRotatePages=/None", "-dCompatibilityLevel=1.4", "-dPDFSETTINGS=/ebook", "-dDownsampleColorImages=true", "-dColorImageResolution=150", "-dDownsampleGrayImages=true", "-dGrayImageResolution=150", "-dDownsampleMonoImages=true", "-dMonoImageResolution=150", "-sOutputFile=\""+tmpfileName+"\"", fileName)
 	case "image/webp":
 		cmds = append(cmds, exec.Command("dwebp", "-mt", "-o", tmpfileName, fileName),
 			exec.Command("cwebp", "-mt", "-quiet", "-lossless", "-m", "6", fileName, "-o", tmpfileName),
@@ -136,7 +136,7 @@ func OptimizeCommand(s *discordgo.Session, m *discordgo.MessageCreate, iteration
 				continue
 			}
 
-			var _, err = os.Stat(tmpfileName)
+			_, err := os.Stat(tmpfileName)
 			if !os.IsNotExist(err) {
 				os.Remove(fileName)
 				os.Rename(tmpfileName, fileName)
