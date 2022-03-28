@@ -57,7 +57,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	case strings.HasPrefix(message.Content, commandPrefix+"o"):
 		itet := strings.Split(message.Content, commandPrefix+"o")
 		ite := 1
-		if len(itet[1]) != 0 {
+		if itet[1] != "" {
 			ite, _ = strconv.Atoi(itet[1])
 		}
 		//fmt.Println(ite, itet, "lalala")
