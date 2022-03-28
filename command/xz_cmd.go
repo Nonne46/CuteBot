@@ -61,7 +61,6 @@ func XzCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// Отправка файла сo смешным сообщением
 	s.ChannelFileSendWithMessage(m.ChannelID, message.String(), fileName+".xz", outReader)
-
 }
 
 // xz принимает байтики, сжимает и возвращает, также, байтики
