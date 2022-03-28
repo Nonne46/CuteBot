@@ -13,9 +13,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var (
-	commandPrefix string
-)
+var commandPrefix string
 
 func main() {
 	err := godotenv.Load()
@@ -45,7 +43,6 @@ func main() {
 }
 
 func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate) {
-
 	// Игнор ботом самого себя
 	if message.Author.ID == session.State.User.ID {
 		return
@@ -60,7 +57,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		if itet[1] != "" {
 			ite, _ = strconv.Atoi(itet[1])
 		}
-		//fmt.Println(ite, itet, "lalala")
+		// fmt.Println(ite, itet, "lalala")
 		command.OptimizeCommand(session, message, ite)
 	case strings.HasPrefix(message.Content, commandPrefix+"info"):
 		ckey := strings.ReplaceAll(message.Content, commandPrefix+"info ", "")
