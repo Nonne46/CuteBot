@@ -71,9 +71,9 @@ func GetData(s *discordgo.Session, m *discordgo.MessageCreate, ckey string) {
 		Title: "Main Info",
 		Color: 0x00FF00,
 		Fields: []*discordgo.MessageEmbedField{
-			&discordgo.MessageEmbedField{Name: "Username", Value: fmt.Sprint(player.Username), Inline: false},
-			&discordgo.MessageEmbedField{Name: "Registered", Value: fmt.Sprint(player.Registered), Inline: true},
-			&discordgo.MessageEmbedField{Name: "Updated", Value: fmt.Sprint(player.Updated), Inline: true},
+			{Name: "Username", Value: fmt.Sprint(player.Username), Inline: false},
+			{Name: "Registered", Value: fmt.Sprint(player.Registered), Inline: true},
+			{Name: "Updated", Value: fmt.Sprint(player.Updated), Inline: true},
 		},
 	}
 	s.ChannelMessageSendEmbed(m.ChannelID, embed)
@@ -90,10 +90,10 @@ func GetData(s *discordgo.Session, m *discordgo.MessageCreate, ckey string) {
 			Title: "Onyx Bans",
 			Color: color,
 			Fields: []*discordgo.MessageEmbedField{
-				&discordgo.MessageEmbedField{Name: "Pedal", Value: fmt.Sprint(playerOnyx.Pedal), Inline: true},
-				&discordgo.MessageEmbedField{Name: "Ban time", Value: fmt.Sprint(playerOnyx.BanTime), Inline: true},
-				&discordgo.MessageEmbedField{Name: "Desc", Value: fmt.Sprint(playerOnyx.Desc), Inline: true},
-				&discordgo.MessageEmbedField{Name: "Reason", Value: fmt.Sprint(playerOnyx.Reason), Inline: false},
+				{Name: "Pedal", Value: fmt.Sprint(playerOnyx.Pedal), Inline: true},
+				{Name: "Ban time", Value: fmt.Sprint(playerOnyx.BanTime), Inline: true},
+				{Name: "Desc", Value: fmt.Sprint(playerOnyx.Desc), Inline: true},
+				{Name: "Reason", Value: fmt.Sprint(playerOnyx.Reason), Inline: false},
 			},
 		}
 		s.ChannelMessageSendEmbed(m.ChannelID, embed)
